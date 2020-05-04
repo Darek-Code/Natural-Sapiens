@@ -1,0 +1,11 @@
+<form [formGroup]="frmUsuario">
+  usuario
+  <input name="txtUsuario" type="text" formControlName="usuario" />
+  <br />
+  password
+  <input name="txtUsuario" type="password" formControlName="password" />
+  <br />
+  <button (click)="validarUsuario()">Validar</button><br />
+  <button (click)="validarUsuarioAsync()">Validar async</button>
+  <h1>{{ mensaje }}</h1>
+</form>

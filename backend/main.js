@@ -7,8 +7,8 @@ const provedoresController = require('./controllers/provedores.controller');
 const aceiteController = require('./controllers/aceite.controller');
 const zumosController = require('./controllers/zumos.controller');
 const jwtController = require('./controllers/jwt.controller');
-
 const { check } = require('express-validator');
+const cors = require('cors');
 
 // Creao el servidor:
 const server = express();
@@ -17,7 +17,8 @@ const server = express();
 server.use(helmet());
 server.use(bodyParser.json());
 server.use(cookieParser());
-server.use(jwtController.checkToken)
+server.use(jwtController.checkToken);
+server.use(cors());
 
 // server.use(express.static('static'));
 
@@ -28,24 +29,24 @@ server.get('/products', productosController.listProducts);
 // Get detail:
 server.get('/product/:id', productosController.getSingleProduct);
 // Añadir productos:
-server.post('/addProducts', [
+server.post('/newProduct', [
     check('categorías').isString().escape().trim(),
 ], productosController.createSingleProduct);
 //Modificar un producto existente:
-server.put('/updateSingleProduct', [
+server.put('/updateProduct', [
     check('categorías').isString().escape().trim(),
     check('id').isNumeric()
 ], productosController.updateSingleProduct);
 //Eliminar un producto
-server.delete('/products/:id', productosController.deleteSingleProduct)
+server.delete('/product/:id', productosController.deleteSingleProduct)
 
 server.get('/juices/list', zumosController.listJuices);
 server.get('/juice/:id', zumosController.getSingleJuiceByID);
-server.post('/addNewJuice', [
+server.post('/newJuice', [
     check('nombre').isString().escape().trim(),
     check('tipo').isString().escape().trim()
 ], zumosController.createNewJuice);
-server.put('/updateSingleJuice',[
+server.put('/updateJuice', [
     check('nombre').isString().escape().trim(),
     check('tipo').isString().escape().trim(),
     check('id').isNumeric()
@@ -54,12 +55,12 @@ server.delete('/juice/:id', zumosController.deleteSingleJuice);
 
 server.get('/aceite/list', aceiteController.listAceite);
 server.get('/aceite/:id', aceiteController.getSingleAceiteByID);
-server.post('/addNewAceite', [
+server.post('/newAceite', [
     check('nombre').isString().escape().trim(),
     check('tipo').isString().escape().trim(),
     check('fk_productos').isNumeric()
 ], aceiteController.createNewAceite);
-server.put('/updateSingleAceite', [
+server.put('/updateAceite', [
     check('nombre').isString().escape().trim(),
     check('tipo').isString().escape().trim(),
     check('id').isNumeric()
@@ -69,7 +70,7 @@ server.delete('/aceite/:id', aceiteController.deleteSingleAceite);
 server.get('/providers', provedoresController.listProviders);
 server.get('/provider/:id', provedoresController.getSingleProvider);
 server.post('/newProvider', provedoresController.newProvider);
-server.put('/updateSingleProvider', provedoresController.updateSingleProvider);
+server.put('/updateProvider', provedoresController.updateSingleProvider);
 server.delete('/provider/:id', provedoresController.deleteSingleProvider);
 
 server.post('/login', provedoresController.login);
