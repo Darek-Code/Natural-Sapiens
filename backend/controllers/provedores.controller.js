@@ -38,7 +38,8 @@ exports.newProvider = async (req, res) => {
     const telefono = req.body.telefono;
     const mail = req.body.mail;
     const now = new Date();
-    const fecha_inscripcion = `${now.getFullYear()}${now.getMonth().toString().padStart(2, "0")}${now.getDate()}`;
+    //const fecha_inscripcion = `${now.getFullYear()}${now.getMonth().toString().padStart(2, "0")}${now.getDate()}`;
+    const fecha_inscripcion = new Date();
     const fk_productos = req.body.fk_productos;
     // Llama al modelo y pedirle que nos cree un nuevo proveedor
     try {

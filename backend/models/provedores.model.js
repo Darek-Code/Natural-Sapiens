@@ -28,7 +28,7 @@ exports.createProvider = (nombre, localidad, telefono, mail, contraseña, fecha_
         try {
             const result = await connection.query(`
             INSERT INTO provedores (nombre, localidad, telefono, mail, contraseña, fecha_inscripcion, fk_productos)
-            VALUES ("${nombre}", "${localidad}", ${telefono}, "${mail}", "${contraseña}", ${fecha_inscripcion}, ${fk_productos})
+            VALUES ("${nombre}", "${localidad}", ${telefono}, "${mail}", "${contraseña}", NOW(), ${fk_productos})
             `)
             resolve(result)
         } catch (error) {
