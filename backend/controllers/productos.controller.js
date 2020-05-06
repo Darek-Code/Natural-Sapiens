@@ -1,9 +1,29 @@
 const productosModel = require('../models/productos.model');
 const { validationResult } = require('express-validator');
 
+exports.listCategories = async (req, res) => {
+    try {
+        const resultados = await productosModel.getAllCategories();
+        res.send(resultados)
+    } catch (error) {
+        res.send(error)
+    }
+};
+
 exports.listProducts = async (req, res) => {
     try {
         const resultados = await productosModel.getAllProducts();
+        res.send(resultados)
+    } catch (error) {
+        res.send(error)
+    }
+};
+
+exports.listProductsByCategoryID = async (req, res) => {
+    try {
+
+        const categoryID = req.query.categoryid;
+        const resultados = await productosModel.getAllProductsByCategory(categoryID);
         res.send(resultados)
     } catch (error) {
         res.send(error)

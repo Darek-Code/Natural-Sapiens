@@ -14,18 +14,61 @@ const cors = require('cors');
 const server = express();
 
 // Middleware:
+server.use(cors());
 server.use(helmet());
 server.use(bodyParser.json());
 server.use(cookieParser());
-server.use(jwtController.checkToken);
-server.use(cors());
+//server.use(jwtController.checkToken);
+server.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
 
+// server.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+//     next();
+// });
+
+// server.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", req.headers.origin);
+//     res.header("Access-Control-Allow-Headers", "x-requested-with, content-type");
+//     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     res.header("Access-Control-Max-Age", "1000000000");
+//     // intercept OPTIONS method
+//     if ('OPTIONS' == req.method) { res.send(200); } else { next(); }
+// });
+
+// res.header('Access-Control-Allow-Origin', '*');
+// res.header('Access-Control-Allow-Headers', 'content-type');
+// res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+
+// server.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+//     next();
+// });
+
+//server.use(cors());
+// Configurar cabeceras y cors
+
+
+//server.use(jwtController.checkToken);
 // server.use(express.static('static'));
 
-
+server.get('/productosPorCategoria', productosController.listProductsByCategoryID);
+server.get('/categorias', productosController.listCategories);
 // Endpoints --> 5 por cada tabla:
 // Get all:
-server.get('/products', productosController.listProducts);
+
+server.get('/productos', productosController.listProducts);
 // Get detail:
 server.get('/product/:id', productosController.getSingleProduct);
 // Añadir productos:
@@ -71,7 +114,7 @@ server.get('/providers', provedoresController.listProviders);
 server.get('/provider/:id', provedoresController.getSingleProvider);
 server.post('/newProvider', provedoresController.newProvider);
 server.put('/updateProvider', provedoresController.updateSingleProvider);
-server.delete('/provider/:id', provedoresController.deleteSingleProvider);
+server.delete('/deleteprovider/:id', provedoresController.deleteSingleProvider);
 
 server.post('/login', provedoresController.login);
 
@@ -84,5 +127,5 @@ server.get('/', (req, res) => {
 const PORT = process.argv[2]
 
 server.listen(PORT, () => {
-    console.log(`Servidor listo en el puerto ${PORT}`)
+    console.log(`Servidor listo en el puerto -> ${PORT}`)
 })

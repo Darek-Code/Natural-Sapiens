@@ -18,13 +18,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.frmUsuario = this.formBuilder.group(
       {
-        usuario: [{ value: "" }],
-        password: [{ value: "" }]
+        usuario: "",
+        password: ""
       });
   }
 
-  async validarUsuarioAsync()
-  {
+  async validarUsuarioAsync() {
     console.log("inicio");
     this.mensaje = "Validando datos....";
     let usuario: string = this.frmUsuario.controls["usuario"].value;
@@ -32,7 +31,7 @@ export class LoginComponent implements OnInit {
     let body = { "id": usuario, "contraseña": password };
     let url = "http://localhost:3000/login";
     let datos: any = await this.http.post(url, body, {}).toPromise();
-
+    document["cookie"] = `aqq=${datos.token}`;
     console.log("después de validar", datos);
     console.log("fin");
     if (datos && datos.message) {
@@ -43,8 +42,7 @@ export class LoginComponent implements OnInit {
 
   }
 
-  validarUsuario()
-  {
+  validarUsuario() {
     console.log("inicio");
     let usuario: string = this.frmUsuario.controls["usuario"].value;
     let password: string = this.frmUsuario.controls["password"].value;

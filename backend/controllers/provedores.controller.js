@@ -40,7 +40,7 @@ exports.newProvider = async (req, res) => {
     const now = new Date();
     //const fecha_inscripcion = `${now.getFullYear()}${now.getMonth().toString().padStart(2, "0")}${now.getDate()}`;
     const fecha_inscripcion = new Date();
-    const fk_productos = req.body.fk_productos;
+    const fk_productos = req.body.producto_id;
     // Llama al modelo y pedirle que nos cree un nuevo proveedor
     try {
         const hash = await bcrypt.hash(req.body.contraseña, 15);
@@ -53,8 +53,11 @@ exports.newProvider = async (req, res) => {
 };
 
 exports.updateSingleProvider = async (req, res) => {
+    console.log("inicio validaciones");
     const errors = validationResult(req) //Ejecutar las validaciones
+    console.log("fin validaciones");
     if (errors.isEmpty()) {
+        console.log("req.body", req.body);
         const id = req.body.id;
         const nombre = req.body.nombre;
         const localidad = req.body.localidad;
@@ -62,9 +65,10 @@ exports.updateSingleProvider = async (req, res) => {
         const mail = req.body.mail;
         const hash = req.body.hash;
         const fecha_inscripcion = req.body.fecha_inscripcion;
-        const fk_productos = req.body.fk_productos;
+        const fk_productos = req.body.producto_id;
         // Llamo al modelo:
         try {
+            console.log("vamos a llamar a model update provider");
             const result = await provedoresModel.updateProvider(id, nombre, localidad, telefono, mail, hash, fecha_inscripcion, fk_productos);
             if (result.affectedRows > 0) {
                 res.send({ "message": "Dato modyficado con éxito!" })
@@ -101,13 +105,14 @@ exports.login = async (req, res) => {
     // Validar el body
     const id = req.body.id;
     const contraseña = req.body.contraseña;
-    console.log(req.body)
+    console.log("req.body", req.body)
     try {
         const provedores = await provedoresModel.getProviderById(id);
-        console.log(provedores);
-        const match = await bcrypt.compare(contraseña, provedores[0].Contraseña);
+        console.log("provedores", provedores);
+        const match = await bcrypt.compare(contraseña, provedores[0].Contrasena);
         console.log("El compare ya ha terminado")
         if (match) {
+
             //Json Web Tokens (JWT)
             jwt.sign({ "provedorID": provedores.id },
                 restricted.jwt_key,

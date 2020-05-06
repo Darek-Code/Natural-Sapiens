@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,23 +15,15 @@ export class RegisterComponent implements OnInit {
   guardando: boolean;
   guardadoOK: boolean;
   categorias: any;
+  productos: any;
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   async ngOnInit() {
-    /*
-        {
-      "nombre": "Open Project",
-      "localidad": "topSecret",
-      "telefono": "123",
-      "mail": "openproject@mail.com",
-      "contraseña": "topSecret",
-      "fecha_inscripcion": "01/01/2020",
-      "fk_productos": 2
-    }
-    */
+
     this.frmRegistrarProducto = this.formBuilder.group(
       {
         nombre: "",
@@ -38,13 +31,13 @@ export class RegisterComponent implements OnInit {
         telefono: "",
         mail: "",
         contraseña: "",
-
+        productoID: ""
       });
-    //await this.getCategorias();
+    await this.getCategorias();
   }
 
   async getCategorias() {
-    this.categorias = await this.http.get("http://localhost:3000/products").toPromise();
+    this.categorias = await this.http.get("http://localhost:3000/categorias", { withCredentials: true }).toPromise();
   }
 
   async guardarProveedor() {
@@ -56,6 +49,7 @@ export class RegisterComponent implements OnInit {
     let telefono: string = this.frmRegistrarProducto.controls["telefono"].value;
     let mail: string = this.frmRegistrarProducto.controls["mail"].value;
     let contraseña: string = this.frmRegistrarProducto.controls["contraseña"].value;
+    let productoID: string = this.frmRegistrarProducto.controls["productoID"].value;
     let body = {
       "nombre": nombre,
       "localidad": localidad,
@@ -63,7 +57,7 @@ export class RegisterComponent implements OnInit {
       "mail": mail,
       "contraseña": contraseña,
       "fecha_inscripcion": "01/01/2020",
-      "fk_productos": 2
+      "producto_id": productoID
     };
     let url = "http://localhost:3000/newProvider";
     let datos: any = await this.http.post(url, body, {}).toPromise();
@@ -72,14 +66,23 @@ export class RegisterComponent implements OnInit {
     if (datos && datos.message && datos.ID) {
       this.guardadoOK = true;
       this.mensaje = "Datos guardados con éxito!!";
+      setTimeout(() => {
+        this.router.navigate(['/providers']);
+      }, 2000);
     } else {
       this.guardadoOK = false;
       this.mensaje = "Error guardando";
     }
     this.guardando = false;
 
+
   }
 
+  async getProductosPorCategoria(categoriaSeleccionada: any) {
+    //console.log("categoriaSeleccionada", categoriaSeleccionada);
+    this.productos = await this.http.get("http://localhost:3000/productosPorCategoria?categoryid=" + categoriaSeleccionada, { withCredentials: true }).toPromise();
+    //console.log("productos", this.productos);
+  }
 
 
 

@@ -2,10 +2,34 @@
 
 const connection = require('./db.model');
 
+exports.getAllCategories = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await connection.query("SELECT * FROM categorias");
+            resolve(data);
+        } catch (error) {
+            reject(error);
+        }
+    })
+
+};
+
 exports.getAllProducts = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const data = await connection.query("SELECT * FROM productos");
+            resolve(data);
+        } catch (error) {
+            reject(error);
+        }
+    })
+
+};
+
+exports.getAllProductsByCategory = (categoryID) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await connection.query("SELECT * FROM productos WHERE categoria_id = " + categoryID);
             resolve(data);
         } catch (error) {
             reject(error);
