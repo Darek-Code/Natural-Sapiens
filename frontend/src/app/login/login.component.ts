@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpParams, HttpHeaders, HttpHandler, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
   mensaje: string = null;
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -36,6 +38,11 @@ export class LoginComponent implements OnInit {
     console.log("fin");
     if (datos && datos.message) {
       this.mensaje = "Datos validados con éxito!!";
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 2000);
+
+
     } else {
       this.mensaje = "Credenciales incorrectas";
     }

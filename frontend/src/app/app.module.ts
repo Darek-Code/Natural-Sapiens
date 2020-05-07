@@ -11,6 +11,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ProvidersListComponent } from './providers-list/providers-list.component';
 import { ProviderEditComponent } from './provider-edit/provider-edit.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProviderEditComponent } from './provider-edit/provider-edit.component';
     ProductsComponent,
     NewProductComponent,
     ProvidersListComponent,
-    ProviderEditComponent
+    ProviderEditComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
