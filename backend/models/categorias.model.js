@@ -1,9 +1,9 @@
 const connection = require('./db.model');
 
-exports.getAllJuices = () => {
+exports.getAllCategorias= () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const data = await connection.query("SELECT * FROM zumos");
+            const data = await connection.query("SELECT * FROM categorias");
             resolve(data);
         } catch (error) {
             reject(error);
@@ -12,10 +12,10 @@ exports.getAllJuices = () => {
 
 };
 
-exports.getJuiceByID = (juiceID) => {
+exports.getCategoriaByID = (categoriasID) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const data = await connection.query(`SELECT * FROM zumos WHERE ID = ${juiceID}`)
+            const data = await connection.query(`SELECT * FROM categorias WHERE ID = ${categoriasID}`)
             resolve(data)
         } catch (error) {
             reject(error)
@@ -23,11 +23,11 @@ exports.getJuiceByID = (juiceID) => {
     })
 };
 
-exports.insertSingleJuice = (nombre, tipo, fk_productos) => {
+exports.insertSingleCategoria = (descripcion) => {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await connection.query(`
-            INSERT INTO zumos (nombre, tipo, fk_productos) VALUES ("${nombre}", "${tipo}", ${fk_productos})`)
+            INSERT INTO categorias (descripcion) VALUES ("${descripcion}")`)
             resolve(result)
         } catch (error) {
             reject(error)
@@ -36,12 +36,12 @@ exports.insertSingleJuice = (nombre, tipo, fk_productos) => {
     })
 };
 
-exports.updateJuice = (id, nombre, tipo) => {
+exports.updateSingleCategoria = (id, descripcion) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = `
-            UPDATE zumos
-            SET nombre = "${nombre}, tipo="${tipo}", fk_productos=${fk_productos}"
+            UPDATE aceite
+            SET nombre = "${descripcion}"
             WHERE ID = ${id};
             `
             const result = await connection.query(sql);
@@ -52,11 +52,11 @@ exports.updateJuice = (id, nombre, tipo) => {
     })
 };
 
-exports.removeJuice = (id) => {
+exports.removeCategoria= (id) => {
 
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = `DELETE FROM zumos WHERE ID = ${id}`;
+            const sql = `DELETE FROM categorias WHERE ID = ${id}`;
             const result = await connection.query(sql);
             resolve(result)
         } catch (error) {

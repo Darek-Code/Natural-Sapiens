@@ -1,27 +1,27 @@
-const aceiteModel = require('../models/aceite.model');
+const categoriasModel = require('../models/categorias.model');
 const { validationResult } = require('express-validator');
 
 
-exports.listAceite = async (req, res) => {
+exports.listCategorias = async (req, res) => {
     try {
-        const resultados = await aceiteModel.getAllAceite();
+        const resultados = await categoriasModel.getAllCategorias();
         res.send(resultados)
     } catch (error) {
         res.send(error)
     }
 };
 
-exports.getSingleAceiteByID = async (req, res) => {
+exports.getCategoriaByID = async (req, res) => {
     try {
         // Sacar del path param el ID del producto
         const id = req.params.id;
         //Pedir al Modelo que saque los datos de los aceite por su ID
-        const aceite = await aceiteModel.getAceiteByID(id);
+        const categoria = await categoriasModel.getCategoriaByID(id);
         //Lógica para comprobar que el zumo exista
-        if (aceite.length === 0) {
+        if (categoria.length === 0) {
             res.status(400).send({ "message": "Ese ID no existe en la base de datos" })
         } else {
-            res.send(aceite)
+            res.send(categoria)
         }
 
     } catch (error) {
@@ -29,17 +29,15 @@ exports.getSingleAceiteByID = async (req, res) => {
     }
 };
 
-exports.createNewAceite = async (req, res) => {
+exports.NewCategoria = async (req, res) => {
     //Sacar del body la información del nuevo producto
     const errors = validationResult(req) //Ejecuta las validaciones
     if (errors.isEmpty()) {
-        const nombre = req.body.nombre;
-        const tipo = req.body.tipo;
-        const fk_productos = req.body.fk_productos;
+        const descripcion = req.body.descripcion;
 
         //Llamar al modelo y pedirle que inserte el aceite
         try {
-            const result = await aceiteModel.insertSingleAceite(nombre, tipo, fk_productos)
+            const result = await categoriasModel.insertSingleCategoria(descripcion)
             res.send({ "message": "Ok producto añadido", "nuevoId": result.insertId })
         } catch (error) {
             res.send(error)
@@ -50,15 +48,14 @@ exports.createNewAceite = async (req, res) => {
     }
 };
 
-exports.updateSingleAceite = async (req, res) => {
+exports.updateSingleCategoria = async (req, res) => {
     const errors = validationResult(req) //Ejecutar las validaciones
     if (errors.isEmpty()) {
         const id = req.body.id;
-        const nombre = req.body.nombre;
-        const tipo = req.body.tipo;
+        const nombre = req.body.descripcion;
         // Llamo al modelo:
         try {
-            const result = await productosModel.updateAceite(id, nombre, tipo);
+            const result = await categoriasModel.updateSingleCategoria(id, descripcion);
             if (result.affectedRows > 0) {
                 res.send({ "message": "Dato modyficado con éxito!" })
             } else {
@@ -72,12 +69,12 @@ exports.updateSingleAceite = async (req, res) => {
     }
 };
 
-exports.deleteSingleAceite = async (req, res) => {
+exports.deleteSingleCategoria = async (req, res) => {
     //Coger de los path params el ID
     const id = req.params.id;
     //Pedir al modelo que elimine ese producto
     try {
-        const results = await productosModel.removeAceite(id);
+        const results = await categoriasModel.removeCategoria(id);
         //Comprobar que el ID exista
         if (results.affectedRows > 0) {
             //Enviar confirmación al cliente
