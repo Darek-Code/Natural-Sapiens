@@ -7,6 +7,8 @@ import { NewProductComponent } from './new-product/new-product.component';
 import { ProvidersListComponent } from './providers-list/providers-list.component';
 import { ProviderEditComponent } from './provider-edit/provider-edit.component';
 import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 const routes: Routes = [
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'newProduct', component: NewProductComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
   { path: '**', component: LoginComponent },
 
 ];

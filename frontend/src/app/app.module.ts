@@ -12,6 +12,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ProvidersListComponent } from './providers-list/providers-list.component';
 import { ProviderEditComponent } from './provider-edit/provider-edit.component';
 import { HomeComponent } from './home/home.component';
+import { ContactComponent } from './contact/contact.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { HomeComponent } from './home/home.component';
     NewProductComponent,
     ProvidersListComponent,
     ProviderEditComponent,
-    HomeComponent
+    HomeComponent,
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
